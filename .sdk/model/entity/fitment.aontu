@@ -1,0 +1,210 @@
+# Entity: fitment
+
+main: kit: entity: fitment: {
+
+  alias: field: {}
+
+  fields: {
+    bolt_pattern: {
+      h: "Bolt Pattern"
+      n: "bolt_pattern"
+      r: true
+      sh: "Lug count x pitch circle diameter in mm."
+      t: "`$STRING`"
+    }
+    center_bore_mm: {
+      h: "Center Bore Mm"
+      n: "center_bore_mm"
+      r: true
+      sh: "Hub bore diameter in mm."
+      t: "`$STRING`"
+    }
+    center_bore_rear_mm: {
+      h: "Center Bore Rear Mm"
+      n: "center_bore_rear_mm"
+      r: true
+      sh: "Rear hub bore in mm when it differs from the front; otherwise empty."
+      t: "`$STRING`"
+    }
+    chassis_code: {
+      h: "Chassis Code"
+      n: "chassis_code"
+      r: true
+      sh: "Chassis code or a year span; often empty."
+      t: "`$STRING`"
+    }
+    flush_wheel: {
+      h: "Flush Wheel"
+      n: "flush_wheel"
+      r: true
+      sh: "Reference size and offset for a flush fit on stock suspension."
+      t: "`$STRING`"
+    }
+    lug_count: {
+      h: "Lug Count"
+      n: "lug_count"
+      r: true
+      sh: "Number of lugs."
+      t: "`$INTEGER`"
+      union: {
+        branches: 2
+        count: 1
+        depth: 0
+      }
+    }
+    make: {
+      h: "Make"
+      n: "make"
+      r: true
+      t: "`$STRING`"
+    }
+    max_wheel: {
+      h: "Max Wheel"
+      n: "max_wheel"
+      r: true
+      sh: "Largest commonly fitted size before rubbing."
+      t: "`$STRING`"
+    }
+    model: {
+      h: "Model"
+      n: "model"
+      r: true
+      sh: "Full model name, including the make."
+      t: "`$STRING`"
+    }
+    oe_wheel: {
+      h: "Oe Wheel"
+      n: "oe_wheel"
+      r: true
+      sh: "Factory wheel size and offset as published by the manufacturer."
+      t: "`$STRING`"
+    }
+    source_lang: {
+      h: "Source Lang"
+      n: "source_lang"
+      r: false
+      sh: "Language of the source guide (en, ru, th, es, fr, ar)."
+      t: "`$STRING`"
+    }
+    source_url: {
+      h: "Source Url"
+      n: "source_url"
+      r: true
+      sh: "The full fitment guide for this vehicle on ankusiwheels.com."
+      t: "`$STRING`"
+    }
+    vehicles: {
+      h: "Vehicles"
+      n: "vehicles"
+      r: true
+      sh: "Number of vehicles of this make in the dataset."
+      t: "`$INTEGER`"
+    }
+    year: {
+      h: "Year"
+      n: "year"
+      r: true
+      t: "`$STRING`"
+    }
+  }
+
+  name: "fitment"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /fitment"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            query: [
+              {
+                ex: "6x139.7"
+                k: "query"
+                n: "bolt_pattern"
+                or: "bolt_pattern"
+                r: false
+                t: "`$STRING`"
+              }
+              {
+                ex: 10
+                k: "query"
+                n: "limit"
+                or: "limit"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                ex: "Toyota"
+                k: "query"
+                n: "make"
+                or: "make"
+                r: false
+                t: "`$STRING`"
+              }
+              {
+                ex: "Camry"
+                k: "query"
+                n: "model"
+                or: "model"
+                r: false
+                t: "`$STRING`"
+              }
+              {
+                ex: 2019
+                k: "query"
+                n: "year"
+                or: "year"
+                r: false
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/fitment"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "fitment"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.results`"
+          }
+        }
+        {
+          co: {
+            id: "GET /makes"
+            source: "openapi3"
+            version: 2
+          }
+          m: "GET"
+          o: "/makes"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "makes"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.results`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

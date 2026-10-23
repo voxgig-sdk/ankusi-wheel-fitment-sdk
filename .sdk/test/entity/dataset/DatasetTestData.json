@@ -1,0 +1,65 @@
+{
+  "existing": {
+    "dataset": {
+      "DATASET00": {
+        "changelog": [],
+        "columns": [],
+        "data": [],
+        "license": "s53",
+        "name": "s54",
+        "records": 85,
+        "source": "s56",
+        "version": "s57",
+        "id": "DATASET00"
+      },
+      "DATASET01": {
+        "changelog": [],
+        "columns": [],
+        "data": [],
+        "license": "sa3",
+        "name": "sa4",
+        "records": 165,
+        "source": "sa6",
+        "version": "sa7",
+        "id": "DATASET01"
+      },
+      "DATASET02": {
+        "changelog": [],
+        "columns": [],
+        "data": [],
+        "license": "sf3",
+        "name": "sf4",
+        "records": 245,
+        "source": "sf6",
+        "version": "sf7",
+        "id": "DATASET02"
+      }
+    }
+  },
+  "new": {
+    "dataset": {
+      "dataset_ref01": {
+        "changelog": [],
+        "columns": [],
+        "data": [],
+        "license": "s143",
+        "name": "s144",
+        "records": 325,
+        "source": "s146",
+        "version": "s147"
+      }
+    }
+  },
+  "requests": {
+    "GET /dataset/json": {
+      "provenance": "operation-contract",
+      "version": 2,
+      "source": "openapi3"
+    },
+    "GET /dataset/csv": {
+      "provenance": "operation-contract",
+      "version": 2,
+      "source": "openapi3"
+    }
+  }
+}

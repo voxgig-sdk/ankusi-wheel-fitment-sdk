@@ -1,0 +1,513 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "ANKUSI Wheel Fitment API",
+    "version": "1.0.0",
+    "description": "Free wheel fitment data (bolt pattern, center bore, factory wheel size and offset, reference flush and maximum aftermarket sizes) for about 10,000 vehicles, served by a WordPress REST namespace on ankusiwheels.com. No key, CORS enabled, data licensed CC BY 4.0 (credit \"ANKUSI Wheel Fitment Dataset\"). Endpoints from the documentation page https://ankusiwheels.com/wheel-fitment-api/ and the WordPress namespace index (GET /wp-json/ankusi/v1); every schema was taken from live GET probes on 2026-10-23 (dataset version 2026.10.19, 10093 records). The docs ask for no more than one request per second; responses are cached for an hour. Divergences from the docs: lug_count is a string in most records but an integer in some newer ones (403 of 10093 in the full dataset, e.g. AITO M8), and the limit parameter is silently capped at 100. Site-internal routes in the namespace (embed-ping, blog-*, pins, inquiry, ev, inline-swap) are not part of the public API and are not modelled. Unverified: whether make matching tolerates whitespace or aliases, and the exact semantics of year when combined with bolt_pattern only.",
+    "contact": {
+      "name": "ANKUSI Wheels",
+      "url": "https://ankusiwheels.com/wheel-fitment-api/"
+    },
+    "license": {
+      "name": "CC BY 4.0 (data)",
+      "url": "https://creativecommons.org/licenses/by/4.0/"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://ankusiwheels.com/wp-json/ankusi/v1",
+      "description": "ANKUSI WordPress REST namespace"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Fitment"
+    },
+    {
+      "name": "Dataset"
+    }
+  ],
+  "paths": {
+    "/fitment": {
+      "get": {
+        "summary": "Search vehicle fitments",
+        "description": "Vehicles matching make, model, year or bolt pattern. At least one of make, model or bolt_pattern is required; without one the API answers HTTP 400.",
+        "operationId": "listFitments",
+        "tags": [
+          "Fitment"
+        ],
+        "parameters": [
+          {
+            "name": "make",
+            "in": "query",
+            "required": false,
+            "description": "Exact make name, case-insensitive.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "Toyota"
+          },
+          {
+            "name": "model",
+            "in": "query",
+            "required": false,
+            "description": "Part of the model name, case-insensitive.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "Camry"
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "required": false,
+            "description": "Exact model year.",
+            "schema": {
+              "type": "integer"
+            },
+            "example": 2019
+          },
+          {
+            "name": "bolt_pattern",
+            "in": "query",
+            "required": false,
+            "description": "Exact bolt pattern, lug count x pitch circle diameter in mm.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "6x139.7"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Results to return, 1 to 100 (default 25). Larger values are capped at 100.",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25
+            },
+            "example": 10
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Matching vehicles (an empty results array when nothing matches).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "dataset_version": {
+                      "type": "string",
+                      "example": "2026.10.19"
+                    },
+                    "license": {
+                      "type": "string",
+                      "example": "CC BY 4.0"
+                    },
+                    "attribution": {
+                      "type": "string"
+                    },
+                    "doi": {
+                      "type": "string",
+                      "example": "10.5281/zenodo.23280367"
+                    },
+                    "count": {
+                      "type": "integer",
+                      "description": "Number of results returned."
+                    },
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Fitment"
+                      }
+                    }
+                  },
+                  "required": [
+                    "dataset_version",
+                    "license",
+                    "attribution",
+                    "doi",
+                    "count",
+                    "results"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "None of make, model or bolt_pattern was given.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/makes": {
+      "get": {
+        "summary": "List makes",
+        "description": "All makes with the number of vehicles for each (174 makes in the probe).",
+        "operationId": "listMakes",
+        "tags": [
+          "Fitment"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "dataset_version": {
+                      "type": "string"
+                    },
+                    "license": {
+                      "type": "string"
+                    },
+                    "attribution": {
+                      "type": "string"
+                    },
+                    "doi": {
+                      "type": "string"
+                    },
+                    "count": {
+                      "type": "integer"
+                    },
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Make"
+                      }
+                    }
+                  },
+                  "required": [
+                    "dataset_version",
+                    "license",
+                    "attribution",
+                    "doi",
+                    "count",
+                    "results"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dataset/json": {
+      "get": {
+        "summary": "Download the full dataset as JSON",
+        "description": "Every record plus the release changelog. Large: about 3.6 MB in the probe.",
+        "operationId": "getDataset",
+        "tags": [
+          "Dataset"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Dataset"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dataset/csv": {
+      "get": {
+        "summary": "Download the full dataset as CSV",
+        "description": "Same records as /dataset/json as UTF-8 CSV with a BOM and a header row: make, model, year, chassis_code, bolt_pattern, center_bore_mm, center_bore_rear_mm, lug_count, oe_wheel, flush_wheel, max_wheel, source_url, source_lang.",
+        "operationId": "getDatasetCsv",
+        "tags": [
+          "Dataset"
+        ],
+        "responses": {
+          "200": {
+            "description": "CSV text",
+            "content": {
+              "text/csv": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Fitment": {
+        "type": "object",
+        "description": "Fitment data for one vehicle. Numeric values are strings; an unknown value is an empty string.",
+        "properties": {
+          "make": {
+            "type": "string",
+            "example": "Toyota"
+          },
+          "model": {
+            "type": "string",
+            "description": "Full model name, including the make.",
+            "example": "Toyota Camry"
+          },
+          "year": {
+            "type": "string",
+            "example": "2018"
+          },
+          "chassis_code": {
+            "type": "string",
+            "description": "Chassis code or a year span; often empty."
+          },
+          "bolt_pattern": {
+            "type": "string",
+            "description": "Lug count x pitch circle diameter in mm.",
+            "example": "5x114.3"
+          },
+          "lug_count": {
+            "description": "Number of lugs. A string in most records, an integer in some newer ones.",
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "example": "5"
+          },
+          "center_bore_mm": {
+            "type": "string",
+            "description": "Hub bore diameter in mm.",
+            "example": "60.1"
+          },
+          "center_bore_rear_mm": {
+            "type": "string",
+            "description": "Rear hub bore in mm when it differs from the front; otherwise empty."
+          },
+          "oe_wheel": {
+            "type": "string",
+            "description": "Factory wheel size and offset as published by the manufacturer.",
+            "example": "F/R: 17x7.5J at ET40 offset, front and rear"
+          },
+          "flush_wheel": {
+            "type": "string",
+            "description": "Reference size and offset for a flush fit on stock suspension.",
+            "example": "19x8.5J ET38"
+          },
+          "max_wheel": {
+            "type": "string",
+            "description": "Largest commonly fitted size before rubbing.",
+            "example": "20x9.0J ET35"
+          },
+          "source_url": {
+            "type": "string",
+            "description": "The full fitment guide for this vehicle on ankusiwheels.com."
+          },
+          "source_lang": {
+            "type": "string",
+            "description": "Language of the source guide (en, ru, th, es, fr, ar). Present only in the full dataset download, not in /fitment results.",
+            "example": "en"
+          }
+        },
+        "required": [
+          "make",
+          "model",
+          "year",
+          "chassis_code",
+          "bolt_pattern",
+          "lug_count",
+          "center_bore_mm",
+          "center_bore_rear_mm",
+          "oe_wheel",
+          "flush_wheel",
+          "max_wheel",
+          "source_url"
+        ]
+      },
+      "Make": {
+        "type": "object",
+        "properties": {
+          "make": {
+            "type": "string",
+            "example": "BMW"
+          },
+          "vehicles": {
+            "type": "integer",
+            "description": "Number of vehicles of this make in the dataset.",
+            "example": 660
+          }
+        },
+        "required": [
+          "make",
+          "vehicles"
+        ]
+      },
+      "Dataset": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "ANKUSI Wheel Fitment Dataset"
+          },
+          "version": {
+            "type": "string",
+            "example": "2026.10.19"
+          },
+          "license": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          },
+          "records": {
+            "type": "integer",
+            "example": 10093
+          },
+          "columns": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "changelog": {
+            "type": "array",
+            "description": "Dataset releases, newest first.",
+            "items": {
+              "$ref": "#/components/schemas/Release"
+            }
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Fitment"
+            }
+          }
+        },
+        "required": [
+          "name",
+          "version",
+          "license",
+          "source",
+          "records",
+          "columns",
+          "changelog",
+          "data"
+        ]
+      },
+      "Release": {
+        "type": "object",
+        "description": "One dataset release in the changelog. Only version and summary are always present.",
+        "properties": {
+          "version": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "added": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "corrected": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Correction"
+            }
+          },
+          "withdrawn_pending": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "centre_bore_blanked_pending": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "centre_bore_reinstated": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "flush_max_blanked_pending": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "staggered_hub_bore_added": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "version",
+          "summary"
+        ]
+      },
+      "Correction": {
+        "type": "object",
+        "properties": {
+          "model": {
+            "type": "string"
+          },
+          "year": {
+            "type": "string"
+          },
+          "field": {
+            "type": "string"
+          },
+          "from": {
+            "type": "string"
+          },
+          "to": {
+            "type": "string"
+          }
+        }
+      },
+      "ApiError": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string"
+          },
+          "dataset_version": {
+            "type": "string"
+          },
+          "license": {
+            "type": "string"
+          },
+          "attribution": {
+            "type": "string"
+          },
+          "doi": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "error"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,136 @@
+# Entity: dataset
+
+main: kit: entity: dataset: {
+
+  alias: field: {}
+
+  fields: {
+    changelog: {
+      h: "Changelog"
+      n: "changelog"
+      r: true
+      sh: "Dataset releases, newest first."
+      t: "`$ARRAY`"
+    }
+    columns: {
+      h: "Columns"
+      n: "columns"
+      r: true
+      t: "`$ARRAY`"
+    }
+    data: {
+      h: "Data"
+      n: "data"
+      r: true
+      t: "`$ARRAY`"
+      union: {
+        branches: 2
+        count: 1
+        depth: 3
+      }
+    }
+    license: {
+      h: "License"
+      n: "license"
+      r: true
+      t: "`$STRING`"
+    }
+    name: {
+      h: "Name"
+      n: "name"
+      r: true
+      t: "`$STRING`"
+    }
+    records: {
+      h: "Records"
+      n: "records"
+      r: true
+      t: "`$INTEGER`"
+    }
+    source: {
+      h: "Source"
+      n: "source"
+      r: true
+      t: "`$STRING`"
+    }
+    version: {
+      h: "Version"
+      n: "version"
+      r: true
+      t: "`$STRING`"
+    }
+  }
+
+  name: "dataset"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /dataset/json"
+            source: "openapi3"
+            version: 2
+          }
+          m: "GET"
+          o: "/dataset/json"
+          q: {
+            "$action": "json"
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "dataset"
+            }
+            {
+              lit: "json"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /dataset/csv"
+            source: "openapi3"
+            version: 2
+          }
+          m: "GET"
+          o: "/dataset/csv"
+          q: {
+            "$action": "csv"
+          }
+          rs: {
+            kind: "raw"
+            media: "text/csv"
+          }
+          s: [
+            {
+              lit: "dataset"
+            }
+            {
+              lit: "csv"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

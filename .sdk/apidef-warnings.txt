@@ -1,0 +1,11 @@
+{
+  point: "warning"
+  note: "Points GET /fitment and GET /makes on entity=fitment op=list have the same selector (exist: none), so only GET /fitment is ever chosen. An action or another entity in guide.aontu tells them apart."
+  entity: "fitment"
+  op: "list"
+  points: [
+    "GET /fitment"
+    "GET /makes"
+  ]
+
+}

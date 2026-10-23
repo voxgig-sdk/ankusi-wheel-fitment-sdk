@@ -1,0 +1,86 @@
+{
+  "existing": {
+    "fitment": {
+      "FITMENT00": {
+        "bolt_pattern": "s8c",
+        "center_bore_mm": "s8d",
+        "center_bore_rear_mm": "s8e",
+        "chassis_code": "s8f",
+        "flush_wheel": "s90",
+        "lug_count": 145,
+        "make": "s92",
+        "max_wheel": "s93",
+        "model": "s94",
+        "oe_wheel": "s95",
+        "source_lang": "s96",
+        "source_url": "s97",
+        "vehicles": 152,
+        "year": "s99"
+      },
+      "FITMENT01": {
+        "bolt_pattern": "s118",
+        "center_bore_mm": "s119",
+        "center_bore_rear_mm": "s11a",
+        "chassis_code": "s11b",
+        "flush_wheel": "s11c",
+        "lug_count": 285,
+        "make": "s11e",
+        "max_wheel": "s11f",
+        "model": "s120",
+        "oe_wheel": "s121",
+        "source_lang": "s122",
+        "source_url": "s123",
+        "vehicles": 292,
+        "year": "s125"
+      },
+      "FITMENT02": {
+        "bolt_pattern": "s1a4",
+        "center_bore_mm": "s1a5",
+        "center_bore_rear_mm": "s1a6",
+        "chassis_code": "s1a7",
+        "flush_wheel": "s1a8",
+        "lug_count": 425,
+        "make": "s1aa",
+        "max_wheel": "s1ab",
+        "model": "s1ac",
+        "oe_wheel": "s1ad",
+        "source_lang": "s1ae",
+        "source_url": "s1af",
+        "vehicles": 432,
+        "year": "s1b1"
+      }
+    }
+  },
+  "new": {
+    "fitment": {
+      "fitment_ref01": {
+        "bolt_pattern": "s230",
+        "center_bore_mm": "s231",
+        "center_bore_rear_mm": "s232",
+        "chassis_code": "s233",
+        "flush_wheel": "s234",
+        "lug_count": 565,
+        "make": "s236",
+        "max_wheel": "s237",
+        "model": "s238",
+        "oe_wheel": "s239",
+        "source_lang": "s23a",
+        "source_url": "s23b",
+        "vehicles": 572,
+        "year": "s23d"
+      }
+    }
+  },
+  "requests": {
+    "GET /fitment": {
+      "provenance": "operation-contract",
+      "version": 2,
+      "source": "openapi3"
+    },
+    "GET /makes": {
+      "provenance": "operation-contract",
+      "version": 2,
+      "source": "openapi3"
+    }
+  }
+}

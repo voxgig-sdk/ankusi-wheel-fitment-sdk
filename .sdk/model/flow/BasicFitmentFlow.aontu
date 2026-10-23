@@ -1,0 +1,22 @@
+# BasicFitmentFlow
+
+main: kit: flow: BasicFitmentFlow:
+{
+  entity: "fitment",
+  kind: "basic",
+  name: "BasicFitmentFlow",
+  step: [
+    {
+      o: "list",
+      v: [
+        {
+          apply: "ItemExists",
+          def: {
+            ref: "fitment_ref01"
+          }
+        }
+      ]
+    }
+  ],
+  "key$": "BasicFitmentFlow"
+}
